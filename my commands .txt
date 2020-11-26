@@ -1,0 +1,365 @@
+echo "print message"
+cal -y
+cal 
+date
+reboot
+(clear history) history -cw
+
+
+
+1-command---2-terminal---3-shell
+
+1.1
+---commandname -options inputs
+
+----------------------------------------
+(shows path)$PATH
+
+----------------------------------------
+after and before commands
+cal -A 1 -B 1 1 1996
+
+----------------------------------------
+linux man page is broken into 8 sections | also less command is similer to cat tac rev nano more vi 
+
+---- type what to search
+man -k "display a line of text"
+
+-----also search with help command
+help echo 
+help pwd
+
+---- read file
+cat
+cat sample.sh
+
+---multiple file into one file
+cat files* > main.txt
+
+--- reverse the content
+cat files* > main.txt | tac > main.txt
+
+------------------- Redirection standard output (1)
+cat 1> test.txt
+
+---- append file 
+cat 1>> test.txt | cat >> test.txt 
+
+
+----standard error (2)
+cat 2>> error.txt
+
+----standard input (0)
+cat 0< input.txt
+
+---play reverse song 
+tac og.mp3 > go.mp3
+
+cat < next.txt |  tac | rev
+
+
+----------------------------------
+
+---- redirect standard input of one file to output files
+cat < input.txt >> output.txt
+cat 1>> output.txt 2>> error.txt
+
+---- locate terminal commnd
+tty
+cat 0< input.txt > /dev/pts/0
+
+
+---- cut command  | delimiter commnd counting space and | fields will select by numbers
+cut < date.txt --delimiter=" " --fields=1 > newday.txt
+date | cut --delimiter=" " --fields=1
+
+----- advance pipline techenique using tee | xargs command
+(tee) command will aloow and take snapshot of data to continue pipline pass data using pipe | also | 
+redirection is usually broke this pipline so 
+it is better to use tee command instead > breaking pipline
+
+date | tee fulldate.txt | cut --delimiter=" " --fields=1 > today.txt
+date | tee fulldate.txt | cut --delimiter=" " --fields=1 | tee todays.txt
+
+
+----xargs command
+xargs commnds also except commandline inputs
+date | xargs echo hello
+date | tee fulldate.txt | cut --delimiter=" " --fields=1 |xargs  echo
+
+like .gitignore
+cat < files.txt | xargs rm
+
+
+---- aliases 
+1st create .bash_aliases file and easily remember user command
+
+alias getdates='date | tee /home/kali/fulldate.txt | cut --delimiter=" " --fields=1 | tee /home/kali/today.txt | xargs echo hello'
+
+alias calmagic="xargs cal -A 1 -B 1 > /home/kali/calfile.txt"
+
+save and reopen terminal
+in kali:- echo 1 1996 | calmagic
+---- 
+
+-----simple command
+ls
+pwd
+cd
+
+-----check file extensions
+file filename.txt 
+
+---- wildcards add multiple charactors based on astris
+ls -ltr *File*
+
+---- wildcards add randome one charactor based on ? 
+ls File?.txt
+
+---- using ox bracket  wildcards
+add [A-Z][a-z][0-9].txt
+
+
+-------add content to file
+echo "hi" > sample.txt
+
+-------------- create file and folders in linux
+touch file.txt
+
+touch /home/kali/sample.txt
+
+------ mkdir 
+
+---create absolute path folders inside folders using -p option
+mkdir -p /folderone/foldertwo/folderthree
+
+
+------BRACE EXPANSION -- 
+
+--create multiple folders jan_1996 to dec_1996 and jan_2019 to dec_2019
+mkdir {jan,feb,mar,apr,may,jun,jul,aug,sep,auc,nov,dec}_{1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019}
+
+mkdir {jan,feb,mar,apr,may,jun,jul,aug,sep,auc,nov,dec}_{1996..2019}
+
+touch {jan,feb,mar,apr,may,jun,jul,aug,sep,auc,nov,dec}_{1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019}/file{1..100}
+
+create files list of files inside multiple folders 
+touch {1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019}/file{1..100}
+
+touch file{1..100}.txt
+
+
+---creat 500 folder 
+mkdir fs/folder{1..500}
+touch fs/folders{1..500}/files{1..100}
+
+---- delete files using rm using wildcards * ? [] | delete folders using rmdir
+remove folder recursively | it will not delete empty file -->> rm -r FolderToDelete 
+rm -ri AskFolderToDelete
+
+delete empty folders --->>>rmdir Folder
+
+mkdir Folder{1..10}_{temp}
+rmdir Folder{1..10}_{temp}
+mkdir -p Folder{1..10}/Folder{1..5}
+mkdir -p Folder/Folder{1..5}
+touch Folder{1..10}/Folder{1..5}/file{1..100}
+touch Folder/Folder
+
+------CP command use for copy file and folders
+cp -r Desktop/Project/1996/file1 .
+cp Desktop/Project/1996/* 1996/.
+cp file1 file.txt
+
+
+---- mv command move and rename file system
+
+mkdir oldfolder
+touch oldfile
+mv oldfile newfile
+mv oldfolder/ newfolder
+mv Project/1996/file* Project/
+
+----- nano commandline based text editor
+nano diary.txt with different options 
+
+
+------ search database files we have to update this databasedb | find command instead we run updatedb every time
+--case insensative way
+locate -i --limit 5 *.conf
+locate -i --existing --follow --limit 5 *.txt
+
+
+----find command search file from anywhere just enter the path
+find /home/kali/Desktop/
+find folder/ -type f -name "find.txt"
+----
+
+----read file using less command like man pages
+cat file.txt | less
+less file.txt 
+
+linux man also similer to less command is similer to cat tac rev nano more vi 
+
+--read from top of the file using head commnd 
+cat file.txt | head  | tac | rev 
+head file.txt -n 5 | cat file.txt 
+head diary.txt -n 2 | wc -l (wc) is word count
+
+--read file from end of the file -n 30 is show 30 lines from end 
+tail -n 30
+
+
+----- sort command is also read files 
+sort filename.txt | less
+sort -r filename.txt
+sort filename.txt > sortedfile.txt
+
+-----sort numbers
+sort -n  numbers.txt | less
+
+--reverse 
+sort -nr  numbers.txt | less
+
+---- unique numebrs
+sort -u  numbers.txt
+
+----advance sorting pipline --- -k select number of column and n(number)u(unique)r(reverse)
+ls -l /etc | head -n 10 | sort -k 5nru
+
+
+----- grep command is use for searching information in files
+
+-c(lines )
+grep -ic filename.txt
+grep word filename.txt
+
+wc -l (word count)
+
+(compare file using grep command)
+grep -ic e names.txt numbers.txt
+ls -l | grep -ic e  
+
+----check bash interpreter
+which bash
+which python3
+which csh
+which ksh
+
+----check file type 
+file backup.sh 
+
+-------------bash script
+
+aliases and bash scripts
+
+in aliases usually we can run one line of script 
+in scripts allows you store and run sequence of useful command in .sh files
+
+#shabang line in first please to run bash files 
+#!/usr/bin/bash
+
+----more efficent wat to run bash scripts 
+
+creating bin folder in home directory
+cd /home/kali/
+mkdir bin 
+mv ~/home/kali/project/backup.sh ~/bin
+
+#rename file
+mv backup.sh backup 
+
+#now give allow execute as program permission(cheked in gui properties)
+#another way in terminal way
+chmod +x backup
+
+#Lets add shell bin folder in shell path | add search path in shell using file name 
+nano .bashrc
+
+#add below line at end of the file
+PATH="$PATH:$HOME/bin"
+
+to check current shell path type
+echo $PATH
+
+#now we can execute own scripts in like oun command 
+
+
+------------CRONTAB for user----------------------------------
+#scheduling script or command to execute task on every day
+#there are 6 columns  
+
+* means run any minute
+
+first column is m minute | we can set values from  0 - 59 | or | * means run every minute
+second column is hour | we can set values from 0 - 23 | or | * means every hour 
+third column is dateofmonth | we can set values from 1-31 | or | * means every day 
+forth column is month | we can set values from 1-12 | or | use 3digit of alphabets EX:- JAN, FEB, MAR, ETC..| or * means run every month
+fifth columns is WEEK | we can set values from 0-6 | or  | use 3 digit alphabets EX :- SUN.MON,ETC.. | OR * MEANS tun every week 
+
+
+----change CRONTAN editor -
+on home directory there is option to change crontab editor by default is nano
+ls -a 
+.selected_editor | or type command | select-editor
+
+*			*			*			*			*			COMMAND
+#IT WILL RUN EVERY MIN
+0,10,20,30													echo "hello" >  file.txt
+*/15					*/3
+59			23			*			JAN,FEB		SUN			echo "fly"
+15			4			*			*			FRI			bash ~/bin/backup.sh
+
+
+-------------------------- INSTALL SOFTWARES IN LINUX OS AND MANAGE GNU OPEN SOURCE SOFTWARES PROJECTS
+
+--check operating system in Linux or unix 
+uname -o 
+
+check software packages on website gnu.org
+
+-- new version of ls command are below | https://www.gnu.org/software/coreutils/ | we  can modift after software installed
+Coreutils - GNU core utilities 
+
+
+----dawnload source code | edit | use gnu c-compiler to compile and install free software from source 
+use stable version to dawnload  
+
+----extract xz compress file
+tar -xJf filename.tar.xz
+
+---goto src folder 
+ls | less
+ls | grep ls
+
+all ls command code written in c# language to run it need compiler to convert this code in machine languages 
+by installing below compiler from below command 
+
+sudo apt-get install gcc
+--go back to src folder 
+cd ..
+--run configure file 
+bash configure
+
+--now to run Makefile but first we need to install make command 
+sudo apt-get install make 
+---next type make command | it will convert machine code to binary to able to run this code in mashine 
+make 
+
+--now run in sudo
+sudo make install
+
+now to change code in  ls file goto ls.c file and save it than come to source folder and type 
+make && sudo make install 
+
+----------------------------------------- software repositorys (package managers) where to find 
+compile source code from scratch and iinstall in machine (most lanthey process)
+
+for faster process we use pre c compiles file and which we can run directly into mashines  
+there is library of software repositorys which are pre compiled and ready to run  in one command 
+
+
+
+
+
+
